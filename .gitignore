@@ -1,0 +1,9 @@
+# PlatformIO build output and editor settings
+.pio/
+.vscode/
+
+# Local WiFi credentials (copy src/secrets.example.h to src/secrets.h)
+**/src/secrets.h
+
+# Old model export kept locally
+esp32cam-sorter/lib_old_v101/

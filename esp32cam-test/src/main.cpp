@@ -7,8 +7,7 @@
 #include "soc/soc.h"
 #include "soc/rtc_cntl_reg.h"
 
-const char *WIFI_SSID = "lalalala";
-const char *WIFI_PASS = "12345678";
+#include "secrets.h"  // WIFI_SSID / WIFI_PASS (not uploaded - copy secrets.example.h)
 
 // AI Thinker ESP32-CAM pin map
 #define PWDN_GPIO_NUM     32
