@@ -97,11 +97,35 @@ It implements the two screens from our Figma design:
   IR/camera/servo/Wi-Fi status, and demo buttons (classify now, tilt, mark as emptied).
 - **Interactive map view:** OpenStreetMap of Cabadbaran City with color-coded bin pins and a
   "Needs attention" list.
+- **Analytics:** items sorted per hour/day (stacked by AI result), waste composition, compartment
+  fill level over time with the full threshold, average AI time, pickups, **field accuracy**
+  (AI result vs what operators say the item really was) and automatic insights. Printable as a report.
+- **History:** every classified item with time, result and AI time; filter by type, review each
+  result (correct / wrong), and **export to CSV**.
+- **Settings:** calibrate the servo angles and tilt time, set the fill estimate and alert threshold,
+  test the tilt, view device info, clear statistics.
+
+On the live panel the operator can answer **"Was the AI right?"** after each item. These reviews feed
+the field accuracy numbers, which measure how the model performs in the real bin rather than on
+the Kaggle test set.
+
+History (latest 250 items), totals, reviews and settings are saved in the ESP32's flash (NVS), so
+they survive restarts. The clock is set by NTP through the hotspot, or by the browser when the
+dashboard opens.
 
 Only **BIN-CBD-001 (City Plaza)** is our real prototype. The other 11 bins are **sample data**
 (marked SAMPLE) so the screens match the wireframe.
 
-API used by the page: `GET /api/status` (live JSON), `POST /api/action?do=classify|plastic|bio|reset`.
+API used by the page:
+
+| Endpoint | Purpose |
+|---|---|
+| `GET /api/status` | Live state, totals, settings, recent events |
+| `GET /api/history` | Stored history records |
+| `POST /api/action?do=classify\|plastic\|bio\|reset\|clearstats` | Demo actions, mark emptied, clear statistics |
+| `POST /api/feedback?id=N&v=correct\|plastic\|bio\|nothing\|clear` | Review a result |
+| `POST /api/settings?plasticAngle=&bioAngle=&tiltMs=&fillPerItem=&fullThreshold=` | Save settings |
+| `POST /api/time?epoch=` | Set the clock from the browser |
 
 ## Build and upload
 
